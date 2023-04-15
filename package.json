@@ -76,8 +76,8 @@
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./ & cp -r ./src/html ./out/src/",
-		"watch": "tsc -watch -p ./ & cp -r ./src/html ./out/src/",
+		"compile": "tsc -p ./ & cp -R ./src/html ./out/src/",
+		"watch": "tsc -watch -p ./ & cp -R ./src/html ./out/src/",
 		"pretest": "npm run compile && npm run lint",
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js"
