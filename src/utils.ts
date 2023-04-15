@@ -14,7 +14,7 @@ export const getIndexHtml = (
 ) => {
   let html = fs.readFileSync(
     path.join(
-      context.extensionPath, './src/html/index.ejs'
+      context.extensionPath, './out/src/html/index.ejs'
     )
   ).toString();
 
@@ -27,7 +27,7 @@ export const getLoadingHtml = (
 ) => {
   let html = fs.readFileSync(
     path.join(
-      context.extensionPath, './src/html/loading.ejs'
+      context.extensionPath, './out/src/html/loading.ejs'
     )
   ).toString();
 
@@ -41,7 +41,7 @@ export const getOnlineHtml = (
 ) => {
   let html = fs.readFileSync(
     path.join(
-      context.extensionPath, './src/html/online.ejs'
+      context.extensionPath, './out/src/html/online.ejs'
     )
   ).toString();
 
