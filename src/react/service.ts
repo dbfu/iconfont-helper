@@ -5,6 +5,7 @@ import * as path from 'path';
 import * as esbuild from 'esbuild';
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
+import * as babel from '@babel/core';
 
 import { Icon } from '../interface';
 import { toAwait } from '../utils';
@@ -112,9 +113,10 @@ export class ReactService {
         const result = await esbuild.transform(`return ${svgContent}`, {
           loader: 'jsx',
           target: 'es6',
-          platform: 'node',
         });
 
+        const code = babel.transform(`return ${svgContent}`, { presets: ['@babel/preset-react'] })?.code;
+        console.log(code);
 
         const func = new Function('React', result?.code || '');
 
