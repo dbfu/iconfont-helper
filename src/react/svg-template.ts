@@ -1,6 +1,10 @@
 import * as prettier from 'prettier';
 
-export const getSvgComponent = (iconInfo: any, svgContent: string, style: string): { componentName: string, fileContent: string } => {
+export const getSvgComponent = (
+  iconInfo: any,
+  svgContent: string,
+  style: string,
+): { componentName: string, fileContent: string } => {
   const componentName = getIconComponentName(iconInfo.code);
   const svgName = getIconSvgName(iconInfo.code);
 
@@ -68,7 +72,9 @@ const formatStyle = (style: string) => {
     .filter(o => o)
     .reduce((prev: any, cur) => {
       const [key, value] = cur.split(':');
-      prev[formatStyleKey(key)] = value.trim();
+      if (key.trim() !== 'vertical-align') {
+        prev[formatStyleKey(key)] = value.trim();
+      }
       return prev;
     }, {});
 
