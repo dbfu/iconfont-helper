@@ -112,7 +112,9 @@ export class ReactService {
         const result = await esbuild.transform(`return ${svgContent}`, {
           loader: 'jsx',
           target: 'es6',
+          platform: 'node',
         });
+
 
         const func = new Function('React', result?.code || '');
 
