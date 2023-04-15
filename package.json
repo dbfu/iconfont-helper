@@ -2,7 +2,7 @@
 	"name": "iconfont-helper",
 	"displayName": "iconfont插件",
 	"description": "快速使用iconfont vscode插件",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"engines": {
 		"vscode": "^1.77.0"
 	},
