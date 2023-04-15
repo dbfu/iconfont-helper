@@ -2,17 +2,16 @@ import axios, { AxiosInstance } from 'axios';
 import { window } from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as esbuild from 'esbuild';
 import * as React from 'react';
 import { renderToString } from 'react-dom/server';
 import * as babel from '@babel/core';
+import react from '@babel/preset-react';
 
 import { Icon } from '../interface';
 import { toAwait } from '../utils';
 import { antdIcons } from '../antd-icons';
 
 export class ReactService {
-
   request: AxiosInstance | undefined;
 
   public setCookie(cookie: string) {
@@ -110,19 +109,13 @@ export class ReactService {
         const fileContent = data.toString('utf8');
         let [svgContent] = fileContent.replace(/\n/g, '').match(/<svg (.+?)>(.+?)<\/svg>/g) || [];
 
-        const result = await esbuild.transform(`return ${svgContent}`, {
-          loader: 'jsx',
-          target: 'es6',
-        });
+        const result = babel.transform(`${svgContent}`, { presets: [react] });
 
-        const code = babel.transform(`return ${svgContent}`, { presets: ['@babel/preset-react'] })?.code;
-        console.log(code);
+        const func = new Function('React', `return ${result?.code || ''}`);
 
-        const func = new Function('React', result?.code || '');
+        const component = func(React);
 
-        const conponent = func(React);
-
-        svgContent = renderToString(conponent);
+        svgContent = renderToString(component);
 
         const lastIndex = fileName.lastIndexOf('.');
         const name = fileName.slice(0, lastIndex);
