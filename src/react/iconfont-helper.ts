@@ -149,7 +149,7 @@ export class ReactIconfontHelper {
 
       if (!fs.existsSync(this.iconsDirPath!)) {
         window.showWarningMessage('检测到icons文件夹不存在，已为你自动创建。');
-        fs.mkdirSync(this.iconsDirPath!);
+        fs.mkdirSync(this.iconsDirPath!, { recursive: true });
       }
 
       const fullFilePath = path.join(this.iconsDirPath!, `./${curIcon?.code}.${this.fileType}`);
@@ -185,7 +185,7 @@ export class ReactIconfontHelper {
         traverse(ast, {
           ImportDeclaration: (path) => {
             const { node } = path;
-            exist = node.specifiers.some((spec: any) => spec.imported.name === curComponentName);
+            exist = node.specifiers.some((spec: any) => spec.local.name === curComponentName);
 
             if (exist) {
               path.stop();
