@@ -11,7 +11,7 @@ import generate from '@babel/generator';
 
 import { getIndexHtml, getLoadingHtml } from '../utils';
 import { reactService } from './service';
-import { getIconComponentName, getSvgComponent } from './svg-template';
+import { getIconComponentName, getSvgComponent, getSvgComponentByJS } from './svg-template';
 import { EventData, EventMessage, Icon } from '../interface';
 
 export class ReactIconfontHelper {
@@ -153,7 +153,15 @@ export class ReactIconfontHelper {
       }
 
       const fullFilePath = path.join(this.iconsDirPath!, `./${curIcon?.code}.${this.fileType}`);
-      const { fileContent, componentName } = getSvgComponent(curIcon, data.icon.svg, data.icon.style);
+
+      let fileContent;
+      let componentName;
+      if (this.fileType === 'tsx') {
+        ({ fileContent, componentName } = getSvgComponent(curIcon, data.icon.svg, data.icon.style));
+      } else {
+        ({ fileContent, componentName } = getSvgComponentByJS(curIcon, data.icon.svg, data.icon.style));
+      }
+
       curComponentName = componentName;
       fs.writeFileSync(fullFilePath, fileContent);
     }

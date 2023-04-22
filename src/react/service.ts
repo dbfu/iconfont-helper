@@ -106,15 +106,16 @@ export class ReactService {
           return;
         }
 
+        // 读取本地组件内容
         const fileContent = data.toString('utf8');
+        // 根据正则表达式获取svg内容
         let [svgContent] = fileContent.replace(/\n/g, '').match(/<svg (.+?)>(.+?)<\/svg>/g) || [];
-
+        // 把jsx转换成react.createElmennt
         const result = babel.transform(`${svgContent}`, { presets: [react] });
-
+        // 动态执行组件代码，获取组件
         const func = new Function('React', `return ${result?.code || ''}`);
-
         const component = func(React);
-
+        // 使用服务端渲染，把组件渲染成html
         svgContent = renderToString(component);
 
         const lastIndex = fileName.lastIndexOf('.');

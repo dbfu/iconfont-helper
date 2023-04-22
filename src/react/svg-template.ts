@@ -33,6 +33,38 @@ export const ${componentName} = (props: Partial<CustomIconComponentProps>) => (
   };
 };
 
+export const getSvgComponentByJS = (
+  iconInfo: any,
+  svgContent: string,
+  style: string,
+): { componentName: string, fileContent: string } => {
+  const componentName = getIconComponentName(iconInfo.code);
+  const svgName = getIconSvgName(iconInfo.code);
+
+  const fileContent = `import Icon from '@ant-design/icons';
+
+const ${svgName} = () => (
+  ${svgContent.trim().replace('style=""', `style={${JSON.stringify(formatStyle(style), null, 0)}}`)}
+);
+
+export const ${componentName} = (props) => (
+  <Icon component={${svgName}} {...props} />
+)`;
+
+  const formatted = prettier.format(
+    fileContent,
+    {
+      parser: 'babel',
+      trailingComma: 'all',
+    }
+  );
+
+  return {
+    componentName,
+    fileContent: formatted,
+  };
+};
+
 export const getIconSvgName = (name: string) => {
   const iconName = getIconName(name);
   const componentName = `SVG${iconName}`;
